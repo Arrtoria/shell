@@ -114,6 +114,8 @@ static inline int handler(char **argv, int argc)
 		printf("argc = %d\n",argc);
 	}
 	*/
+
+	/* handler '&' */
 	int flag = 0;
 	if (strcmp(argv[argc - 1], "&") == 0) {
 		flag = 1;
@@ -121,8 +123,10 @@ static inline int handler(char **argv, int argc)
 		argv[argc - 1] = NULL;
 		argc--;
 	}
+
+
 	if (fork() == 0) {
-		if(execvp(argv[0], argv))
+		if(execvp(argv[0], argv) < 0)
 			printf("error message: %s failed\n", argv[0]);
 		exit(0);
 	} else {	
