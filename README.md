@@ -22,7 +22,7 @@ Shell 项目是一个简单的 Unix shell 实现，用于在 OpenEuler 22.03 环
 
 运行 `run.sh` 脚本来编译和执行 shell 程序：
 
-./run.sh
+`./run.sh`
 
 如果编译成功且执行无误，您将看到 shell 的提示符，可以开始输入命令。
 
