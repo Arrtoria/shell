@@ -135,9 +135,13 @@ osh>
 
 要解决这个问题有很多办法，我们可以调整`scanf`内部的格式不用`"%s"`，换成其他的格式。也可以用更简单的办法。因为C提供了读取整行输入的函数。
 `char *fgets(char *str, int n, FILE *stream);`
+
 `str`：指向字符数组的指针，用于存储读取的字符串。
+
 `n`：要读取的最大字符数，包括终止 null 字符。
+
 `stream`：指向 FILE 对象的指针，标识要从中读取的文件流。
+
 ```C
   1 #include <stdio.h>
   2 #include <string.h>
