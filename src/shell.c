@@ -10,14 +10,14 @@
 int cnt;
 char *pri_ins[16] = {"quit", "exit", "history",};
 /*list */
-static void inline initlist(void);
-static void inline add_list(int, char **);
+static inline void initlist(void);
+static inline void add_list(int, char **);
 /* shell */
-static void inline print_history(void);
-static void inline handle_retval(int);
-static int inline get_ins(char **, int);
-static void inline handle_execfromhistory(char **, int *);
-static int inline handler(char **, int);
+static inline void print_history(void);
+static inline void handle_retval(int);
+static inline int get_ins(char **, int);
+static inline void handle_execfromhistory(char **, int *);
+static inline int handler(char **, int);
 struct history_commands {
 	struct list_head run;
 	int position;
@@ -26,7 +26,7 @@ struct history_commands {
 } hiscom;
 
 enum RetValue{EXEC, HISTORY, EXECFROMHISROTY};
-static int inline get_ins(char **argv, int argc)
+static inline int get_ins(char **argv, int argc)
 {
 	if (argc == 1) {
 		int index = 0;
@@ -37,7 +37,7 @@ static int inline get_ins(char **argv, int argc)
 	}
 	return -1;
 }
-static void inline handle_execfromhistory(char **argv, int *argc)
+static inline void handle_execfromhistory(char **argv, int *argc)
 {
 	if(*argc != 1) return ;	
 	int position;
@@ -58,6 +58,7 @@ static void inline handle_execfromhistory(char **argv, int *argc)
 			p++;
 		}
 	}
+
 	//printf("position = %d\n", position);
 	struct list_head *node;
 	int count = 0;
@@ -79,7 +80,7 @@ static void inline handle_execfromhistory(char **argv, int *argc)
 	printf("No such command in history.\n");
 
 }	
-static int inline handler(char **argv, int argc)
+static inline int handler(char **argv, int argc)
 {	/*
 	printf("will execute: ");
 	
@@ -125,12 +126,12 @@ static int inline handler(char **argv, int argc)
 	return EXEC;
 }
 /* init the list */
-static void inline initlist(void)
+static inline void initlist(void)
 {
 	INIT_LIST_HEAD(&hiscom.run);
 }
 /* add a node to list */
-static void inline add_list(int postion, char **argv)
+static inline void add_list(int postion, char **argv)
 {
 	struct history_commands *p = (struct history_commands *) malloc(sizeof (struct history_commands));
 	p->position = postion;
@@ -143,22 +144,36 @@ static void inline add_list(int postion, char **argv)
 	list_add(&p->run, &hiscom.run);
 }
 /* print history instructions */
-static void inline print_history(void)
+/* lazy free the memory */
+static inline void print_history(void)
 {
 	struct list_head *node;
+	struct list_head *safe_node;
+	struct list_head *tail;
 	int count = 0;
-	list_for_each(node, &hiscom.run) {
-		printf("%d ", ((struct history_commands*)node)->position);
-		for (int i = 0; ((struct history_commands*)node)->argv[i]; i++) {
-			printf("%s ", ((struct history_commands*)node)->argv[i]);
+	list_for_each_safe(node,safe_node, &hiscom.run) {
+		struct history_commands *unode = (struct history_commands*)node;
+		if (count < 10) {
+			printf("%d ", unode->position);
+			for (int i = 0; unode->argv[i]; i++) {
+				printf("%s ", unode->argv[i]);
+			}
+			printf("\n");
+			tail = node;
 		}
-		printf("\n");
+		if (count >= 10) {
+			tail->next = &hiscom.run;
+			for (int i = 0; i < unode->argc; i++) {
+				free(unode->argv[i]);
+			}
+			free(unode->argv);
+			free(unode);
+		}
 		count += 1;
-		if (count >= 10) break;
 	}
 }
 /* handle instructinos like history or !!*/
-static void inline handle_retval(int retval)
+static inline void handle_retval(int retval)
 {
 	switch(retval) {
 		case HISTORY:
