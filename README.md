@@ -1,4 +1,8 @@
-# Shell 项目简介（请先看shell.md!!!!!）
+# Shell 项目简介
+
+#速通教程是shell.md!!!!!, 本README只教你怎么用脚本玩这个shell
+#速通教程是shell.md!!!!!, 本README只教你怎么用脚本玩这个shell
+#速通教程是shell.md!!!!!, 本README只教你怎么用脚本玩这个shell
 
 Shell 项目是一个简单的 Unix shell 实现，用于在 OpenEuler 22.03 环境下执行命令行操作。该项目使用 C 语言编写，并借鉴了系统内核的链表实现。
 
