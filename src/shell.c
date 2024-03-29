@@ -7,6 +7,9 @@
 #include "list.h"
 #define MAXARG 40
 #define LIMIT 10
+#define QUIT 0
+#define EXIT 1
+#define HISTRY 2
 int cnt;
 char *pri_ins[16] = {"quit", "exit", "history",};
 /*list */
@@ -92,11 +95,11 @@ static inline int handler(char **argv, int argc)
 	/*handle instruction: history */
 	int ins = get_ins(argv, argc);
 	switch (ins) {
-		case 0:
-		case 1:
+		case QUIT:
+		case EXIT:
 			printf("lshell is closing. Goodbye!\n");
 			exit(0);
-		case 2:
+		case HISTRY:
 			return HISTORY;	
 		default:
 			break;
@@ -111,14 +114,21 @@ static inline int handler(char **argv, int argc)
 		printf("argc = %d\n",argc);
 	}
 	*/
+	int flag = 0;
+	if (strcmp(argv[argc - 1], "&") == 0) {
+		flag = 1;
+		free(argv[argc - 1]);
+		argv[argc - 1] = NULL;
+		argc--;
+	}
 	if (fork() == 0) {
 		if(execvp(argv[0], argv))
 			printf("error message: %s failed\n", argv[0]);
 		exit(0);
 	} else {	
 		add_list(cnt, argv);
-		if (strcmp(argv[argc - 1], "&") == 0) {
-					
+		if (flag == 1) {
+			// do nothing
 		} else {
 		      wait(NULL);			
 		}
