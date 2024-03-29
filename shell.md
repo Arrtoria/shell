@@ -32,6 +32,8 @@
 
 [quit功能展示](https://postimg.cc/qhDmxXgX)
 
+['&'展示](https://postimg.cc/zbHm9T0J)
+
 简单总结一下就是
 - 能够解释用户指令（如ls, ls -l, mkdir testdir）
 - 添加history指令和quit指令的处理（这两个不是bash提供的，需要我们自己实现）
