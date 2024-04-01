@@ -211,7 +211,10 @@ int main() {
 		char buf[64];
 		memset(buf, 0, 64);
 		fgets(buf, 64, stdin);
-		if (buf[0] == '\n' || buf[0] == '\0') continue;
+		if (buf[0] == '\n' || buf[0] == '\0') {
+			cnt--;
+			continue;
+		}
 		buf[strlen(buf) - 1] = '\0';
 		//printf("%s", buf);
 		char *token = strtok(buf, " ");
